@@ -3,6 +3,8 @@ package main
 import (
   "strings"
   "fmt"
+
+  "github.com/gocolly/colly"
 )
 
 func parseToken(rawToken string) string {
@@ -54,8 +56,14 @@ func parseToken(rawToken string) string {
 }
 
 func main() {
-  token := "89wx7530z3148857829z2uv1017u1047"
-  formatedToken := parseToken(token)
+  c := colly.NewCollector()
 
-  fmt.Println("Formated token", formatedToken)
+  c.OnHTML("input[name=token]", func(e *colly.HTMLElement) {
+    token := e.Attr("value")
+    formatedToken := parseToken(token)
+
+    fmt.Println("Formated token", formatedToken)
+	})
+
+  c.Visit("http://applicant-test.us-east-1.elasticbeanstalk.com/")
 }
