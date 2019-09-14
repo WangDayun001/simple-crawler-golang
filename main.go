@@ -8,7 +8,6 @@ import (
 )
 
 func parseToken(rawToken string) string {
-  fmt.Println("Raw token", rawToken)
   tokenCharacters := make([]string, len(rawToken))
 
   charactersReplacements := map[string]string {
@@ -50,20 +49,35 @@ func parseToken(rawToken string) string {
 
   formatedToken := strings.Join(tokenCharacters, "")
 
-  fmt.Println("Formated token", formatedToken)
-
   return formatedToken
 }
 
-func main() {
+func getAnswer () {
+  // initial props
   c := colly.NewCollector()
+  token := ""
+
+  // methods
+  c.OnRequest(func(r *colly.Request) {
+    r.Headers.Set("Referer", "http://applicant-test.us-east-1.elasticbeanstalk.com/")
+  })
 
   c.OnHTML("input[name=token]", func(e *colly.HTMLElement) {
-    token := e.Attr("value")
-    formatedToken := parseToken(token)
+    token = parseToken(e.Attr("value"))
+  })
 
-    fmt.Println("Formated token", formatedToken)
-	})
+  c.OnHTML("#answer", func(e *colly.HTMLElement) {
+    answer := e.Text
 
+    fmt.Println("Answer", answer)
+  })
+
+  // init
   c.Visit("http://applicant-test.us-east-1.elasticbeanstalk.com/")
+
+  c.Post("http://applicant-test.us-east-1.elasticbeanstalk.com/", map[string]string{"token": token})
+}
+
+func main() {
+  getAnswer()
 }
