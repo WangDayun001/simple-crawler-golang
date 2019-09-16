@@ -1,5 +1,5 @@
 # Simple Golang Crawler
-Simple script to access [this page](http://applicant-test.us-east-1.elasticbeanstalk.com/), click on the button and save the answer at answers.json file
+Simple script to access [this page](http://applicant-test.us-east-1.elasticbeanstalk.com/), break the CSRF token, generate and save the answer at answers.json file
 
 # Running
 
