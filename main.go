@@ -8,7 +8,7 @@ import (
   "time"
   "github.com/gocolly/colly"
 
-  Utils "./utils"
+  Utils "github.com/willycamargo/simple-crawler-golang/utils"
 )
 
 /*
